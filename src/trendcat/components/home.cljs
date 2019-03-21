@@ -24,7 +24,7 @@
                            :justify-content "space-between"
                            :align-items "center"}}
              [:div.title.is-2 {:style {:color "#f34"}}
-              "trend-cat"]
+              "trendcat"]
              [:div {:style {:margin-bottom "24px"}}
               [:a.github-button {:href "https://github.com/ergenekonyigit/trendcat"
                                  :data-size "large"
