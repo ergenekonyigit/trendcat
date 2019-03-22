@@ -58,9 +58,11 @@
     {:style {:margin-bottom "24px"}}
     [:a.github-button
      {:href "https://github.com/ergenekonyigit/trendcat"
+      :data-icon "octicon-star"
       :data-size "large"
+      :data-show-count "true"
       :aria-label "Star ergenekonyigit/trendcat on GitHub"}
-     "Github"]]])
+     "Star"]]])
 
 
 (defn second-header [since-name]
