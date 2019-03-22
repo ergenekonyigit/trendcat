@@ -29,7 +29,7 @@
               [:a.github-button {:href "https://github.com/ergenekonyigit/trendcat"
                                  :data-size "large"
                                  :aria-label "Star ergenekonyigit/trendcat on GitHub"}                                
-               "Star"]]]
+               "Github"]]]
             [:div {:style {:display "flex"
                            :flex-direction "row"
                            :justify-content "space-between"}}
