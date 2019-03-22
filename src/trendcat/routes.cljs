@@ -3,8 +3,8 @@
   (:require [goog.events :as events]
             [goog.history.EventType :as EventType]
             [secretary.core :as secretary :include-macros true]
-            [trendcat.db :refer [app-state]]
-            [trendcat.components.home :refer [home]]))
+            [trendcat.db :refer [app-state]]))
+
 
 (defn hook-browser-navigation! []
   (doto (Html5History.)
@@ -22,13 +22,3 @@
     (swap! app-state assoc :page :home))
 
   (hook-browser-navigation!))
-
-
-(defmulti current-page #(@app-state :page))
-
-(defmethod current-page :home []
-  [home])
-
-(defmethod current-page :default []
-  [:div ])
-
