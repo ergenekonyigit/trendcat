@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d934dd81-519b-42eb-a7d1-a97f9941bdbe/deploy-status)](https://app.netlify.com/sites/trendcat/deploys)
 
 ### Development mode
 
