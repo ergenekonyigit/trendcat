@@ -4,7 +4,7 @@
 
 
 (defn handler [response]
-  (swap! app-state assoc :trending response))
+  (swap! app-state assoc :trends response))
 
 
 (defn error-handler [{:keys [status status-text]}]
