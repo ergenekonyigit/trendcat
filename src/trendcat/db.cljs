@@ -1,9 +1,24 @@
 (ns trendcat.db
   (:require [reagent.core :as r]))
 
+
+(defn set-item!
+  "Set `key' in browser's localStorage to `val`."
+  [key val]
+  (.setItem (.-localStorage js/window) key (.stringify js/JSON (clj->js val))))
+
+
+(defn get-item
+  "Returns value of `key' from browser's localStorage."
+  [key]
+  (js->clj (.parse js/JSON (.getItem (.-localStorage js/window) key)) :keywordize-keys true))
+
+
 (defonce api-url "https://github-trending-api.now.sh")
 
-(defonce app-state (r/atom {:since "daily"
+
+(defonce app-state (r/atom {:lang (or (get-item "current-lang") nil)
+                            :since (or (get-item "current-since") "daily")
                             :languages [{:urlParam nil :name "All Languages"}
                                         {:urlParam "1c-enterprise" :name "1C Enterprise"}
                                         {:urlParam "abap" :name "ABAP"}
@@ -475,5 +490,4 @@
                                         {:urlParam "yang" :name "YANG"}
                                         {:urlParam "yara" :name "YARA"}
                                         {:urlParam "zephir" :name "Zephir"}
-                                        {:urlParam "zimpl" :name "Zimpl"}]
-                            }))
+                                        {:urlParam "zimpl" :name "Zimpl"}]}))

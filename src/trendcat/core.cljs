@@ -1,3 +1,4 @@
+
 (ns trendcat.core
   (:require [reagent.core :as r]
             [trendcat.routes :refer [app-routes]]

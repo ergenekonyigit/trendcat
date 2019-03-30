@@ -1,6 +1,6 @@
 (ns trendcat.components.list-view
   (:require [reagent.core :as r]
-            [trendcat.db :refer [app-state]]
+            [trendcat.db :refer [app-state get-item]]
             [trendcat.actions :refer [get-repositories]]))
 
 
@@ -37,7 +37,7 @@
    [:svg
     {:view-box "0 0 14 16" :version "1.1" :width "14" :height "16" :role "img"}
     [:path
-     {:fill "#6c757d" :fill-rule "evenodd" :d "M14 6l-4.9-.64L7 1 4.9 5.36 0 
+     {:fill "#6c757d" :fill-rule "evenodd" :d "M14 6l-4.9-.64L7 1 4.9 5.36 0
 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"}]]
    \u00A0 (:stars repo)])
 
@@ -174,7 +174,8 @@
 
 (defn list-view []
   (r/create-class
-   {:component-did-mount #(get-repositories)
+   {:component-did-mount #(get-repositories {:lang (:lang @app-state)
+                                             :since (:since @app-state)})
     :reagent-render
     (fn []
       [:div
@@ -196,4 +197,3 @@
           {:style {:color "#000"
                    :text-align "center"}}
           "Loading..."])])}))
-
