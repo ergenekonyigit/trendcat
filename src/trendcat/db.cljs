@@ -14,16 +14,42 @@
   (js->clj (.parse js/JSON (.getItem (.-localStorage js/window) key)) :keywordize-keys true))
 
 
-(defonce api-url "https://github-trending-api.now.sh")
+(defonce github-api-url "https://github-trending-api.now.sh")
 
 
-(defonce app-state (r/atom {:lang (or (get-item "current-lang") nil)
-                            :since (or (get-item "current-since") "daily")
-                            :languages [{:urlParam nil :name "All Languages"}
-                                        {:urlParam "1c-enterprise" :name "1C Enterprise"}
+(defonce hnews-api-url "https://hacker-news.firebaseio.com/v0")
+
+
+(defonce app-state (r/atom {:stories   (or (get-item "stories") "topstories")
+                            :lang      (or (get-item "current-lang") nil)
+                            :since     (or (get-item "current-since") "daily")
+                            :fav-languages [{:urlParam "actionscript" :name "ActionScript"}
+                                            {:urlParam "c" :name "C"}
+                                            {:urlParam "c%23" :name "C#"}
+                                            {:urlParam "c++" :name "C++"}
+                                            {:urlParam "clojure" :name "Clojure"}
+                                            {:urlParam "css" :name "CSS"}
+                                            {:urlParam "go" :name "Go"}
+                                            {:urlParam "haskell" :name "Haskell"}
+                                            {:urlParam "html" :name "HTML"}
+                                            {:urlParam "java" :name "Java"}
+                                            {:urlParam "javascript" :name "JavaScript"}
+                                            {:urlParam "lua" :name "Lua"}
+                                            {:urlParam "matlab" :name "Matlab"}
+                                            {:urlParam "objective-c" :name "Objective-C"}
+                                            {:urlParam "php" :name "PHP"}
+                                            {:urlParam "python" :name "Python"}
+                                            {:urlParam "r" :name "R"}
+                                            {:urlParam "ruby" :name "Ruby"}
+                                            {:urlParam "scala" :name "Scala"}
+                                            {:urlParam "shell" :name "Shell"}
+                                            {:urlParam "swift" :name "Swift"}
+                                            {:urlParam "tex" :name "TeX"}
+                                            {:urlParam "typescript" :name "TypeScript"}
+                                            {:urlParam "vim-script" :name "Vim script"}]
+                            :languages [{:urlParam "1c-enterprise" :name "1C Enterprise"}
                                         {:urlParam "abap" :name "ABAP"}
                                         {:urlParam "abnf" :name "ABNF"}
-                                        {:urlParam "actionscript" :name "ActionScript"}
                                         {:urlParam "ada" :name "Ada"}
                                         {:urlParam "adobe-font-metrics" :name "Adobe Font Metrics"}
                                         {:urlParam "agda" :name "Agda"}
@@ -64,9 +90,6 @@
                                         {:urlParam "brainfuck" :name "Brainfuck"}
                                         {:urlParam "brightscript" :name "Brightscript"}
                                         {:urlParam "bro" :name "Bro"}
-                                        {:urlParam "c" :name "C"}
-                                        {:urlParam "c%23" :name "C#"}
-                                        {:urlParam "c++" :name "C++"}
                                         {:urlParam "c-objdump" :name "C-ObjDump"}
                                         {:urlParam "c2hs-haskell" :name "C2hs Haskell"}
                                         {:urlParam "cap'n-proto" :name "Cap'n Proto"}
@@ -80,7 +103,6 @@
                                         {:urlParam "clean" :name "Clean"}
                                         {:urlParam "click" :name "Click"}
                                         {:urlParam "clips" :name "CLIPS"}
-                                        {:urlParam "clojure" :name "Clojure"}
                                         {:urlParam "closure-templates" :name "Closure Templates"}
                                         {:urlParam "cmake" :name "CMake"}
                                         {:urlParam "cobol" :name "COBOL"}
@@ -100,7 +122,6 @@
                                         {:urlParam "csound" :name "Csound"}
                                         {:urlParam "csound-document" :name "Csound Document"}
                                         {:urlParam "csound-score" :name "Csound Score"}
-                                        {:urlParam "css" :name "CSS"}
                                         {:urlParam "csv" :name "CSV"}
                                         {:urlParam "cuda" :name "Cuda"}
                                         {:urlParam "cweb" :name "CWeb"}
@@ -169,7 +190,6 @@
                                         {:urlParam "glyph" :name "Glyph"}
                                         {:urlParam "gn" :name "GN"}
                                         {:urlParam "gnuplot" :name "Gnuplot"}
-                                        {:urlParam "go" :name "Go"}
                                         {:urlParam "golo" :name "Golo"}
                                         {:urlParam "gosu" :name "Gosu"}
                                         {:urlParam "grace" :name "Grace"}
@@ -184,11 +204,9 @@
                                         {:urlParam "haml" :name "Haml"}
                                         {:urlParam "handlebars" :name "Handlebars"}
                                         {:urlParam "harbour" :name "Harbour"}
-                                        {:urlParam "haskell" :name "Haskell"}
                                         {:urlParam "haxe" :name "Haxe"}
                                         {:urlParam "hcl" :name "HCL"}
                                         {:urlParam "hlsl" :name "HLSL"}
-                                        {:urlParam "html" :name "HTML"}
                                         {:urlParam "html+django" :name "HTML+Django"}
                                         {:urlParam "html+ecr" :name "HTML+ECR"}
                                         {:urlParam "html+eex" :name "HTML+EEX"}
@@ -210,9 +228,7 @@
                                         {:urlParam "isabelle-root" :name "Isabelle ROOT"}
                                         {:urlParam "j" :name "J"}
                                         {:urlParam "jasmin" :name "Jasmin"}
-                                        {:urlParam "java" :name "Java"}
                                         {:urlParam "java-server-pages" :name "Java Server Pages"}
-                                        {:urlParam "javascript" :name "JavaScript"}
                                         {:urlParam "jflex" :name "JFlex"}
                                         {:urlParam "jison" :name "Jison"}
                                         {:urlParam "jison-lex" :name "Jison Lex"}
@@ -253,7 +269,6 @@
                                         {:urlParam "lookml" :name "LookML"}
                                         {:urlParam "loomscript" :name "LoomScript"}
                                         {:urlParam "lsl" :name "LSL"}
-                                        {:urlParam "lua" :name "Lua"}
                                         {:urlParam "m" :name "M"}
                                         {:urlParam "m4" :name "M4"}
                                         {:urlParam "m4sugar" :name "M4Sugar"}
@@ -263,7 +278,6 @@
                                         {:urlParam "marko" :name "Marko"}
                                         {:urlParam "mask" :name "Mask"}
                                         {:urlParam "mathematica" :name "Mathematica"}
-                                        {:urlParam "matlab" :name "Matlab"}
                                         {:urlParam "maven-pom" :name "Maven POM"}
                                         {:urlParam "max" :name "Max"}
                                         {:urlParam "maxscript" :name "MAXScript"}
@@ -304,7 +318,6 @@
                                         {:urlParam "nu" :name "Nu"}
                                         {:urlParam "numpy" :name "NumPy"}
                                         {:urlParam "objdump" :name "ObjDump"}
-                                        {:urlParam "objective-c" :name "Objective-C"}
                                         {:urlParam "objective-c++" :name "Objective-C++"}
                                         {:urlParam "objective-j" :name "Objective-J"}
                                         {:urlParam "ocaml" :name "OCaml"}
@@ -332,7 +345,6 @@
                                         {:urlParam "pep8" :name "Pep8"}
                                         {:urlParam "perl" :name "Perl"}
                                         {:urlParam "perl-6" :name "Perl 6"}
-                                        {:urlParam "php" :name "PHP"}
                                         {:urlParam "pic" :name "Pic"}
                                         {:urlParam "pickle" :name "Pickle"}
                                         {:urlParam "picolisp" :name "PicoLisp"}
@@ -358,12 +370,10 @@
                                         {:urlParam "pure-data" :name "Pure Data"}
                                         {:urlParam "purebasic" :name "PureBasic"}
                                         {:urlParam "purescript" :name "PureScript"}
-                                        {:urlParam "python" :name "Python"}
                                         {:urlParam "python-console" :name "Python console"}
                                         {:urlParam "python-traceback" :name "Python traceback"}
                                         {:urlParam "qmake" :name "QMake"}
                                         {:urlParam "qml" :name "QML"}
-                                        {:urlParam "r" :name "R"}
                                         {:urlParam "racket" :name "Racket"}
                                         {:urlParam "ragel" :name "Ragel"}
                                         {:urlParam "raml" :name "RAML"}
@@ -388,14 +398,12 @@
                                         {:urlParam "rouge" :name "Rouge"}
                                         {:urlParam "rpc" :name "RPC"}
                                         {:urlParam "rpm-spec" :name "RPM Spec"}
-                                        {:urlParam "ruby" :name "Ruby"}
                                         {:urlParam "runoff" :name "RUNOFF"}
                                         {:urlParam "rust" :name "Rust"}
                                         {:urlParam "sage" :name "Sage"}
                                         {:urlParam "saltstack" :name "SaltStack"}
                                         {:urlParam "sas" :name "SAS"}
                                         {:urlParam "sass" :name "Sass"}
-                                        {:urlParam "scala" :name "Scala"}
                                         {:urlParam "scaml" :name "Scaml"}
                                         {:urlParam "scheme" :name "Scheme"}
                                         {:urlParam "scilab" :name "Scilab"}
@@ -403,7 +411,6 @@
                                         {:urlParam "sed" :name "sed"}
                                         {:urlParam "self" :name "Self"}
                                         {:urlParam "shaderlab" :name "ShaderLab"}
-                                        {:urlParam "shell" :name "Shell"}
                                         {:urlParam "shellsession" :name "ShellSession"}
                                         {:urlParam "shen" :name "Shen"}
                                         {:urlParam "slash" :name "Slash"}
@@ -431,13 +438,11 @@
                                         {:urlParam "sugarss" :name "SugarSS"}
                                         {:urlParam "supercollider" :name "SuperCollider"}
                                         {:urlParam "svg" :name "SVG"}
-                                        {:urlParam "swift" :name "Swift"}
                                         {:urlParam "systemverilog" :name "SystemVerilog"}
                                         {:urlParam "tcl" :name "Tcl"}
                                         {:urlParam "tcsh" :name "Tcsh"}
                                         {:urlParam "tea" :name "Tea"}
                                         {:urlParam "terra" :name "Terra"}
-                                        {:urlParam "tex" :name "TeX"}
                                         {:urlParam "text" :name "Text"}
                                         {:urlParam "textile" :name "Textile"}
                                         {:urlParam "thrift" :name "Thrift"}
@@ -449,7 +454,6 @@
                                         {:urlParam "twig" :name "Twig"}
                                         {:urlParam "txl" :name "TXL"}
                                         {:urlParam "type-language" :name "Type Language"}
-                                        {:urlParam "typescript" :name "TypeScript"}
                                         {:urlParam "unified-parallel-c" :name "Unified Parallel C"}
                                         {:urlParam "unity3d-asset" :name "Unity3D Asset"}
                                         {:urlParam "unix-assembly" :name "Unix Assembly"}
@@ -460,7 +464,6 @@
                                         {:urlParam "vcl" :name "VCL"}
                                         {:urlParam "verilog" :name "Verilog"}
                                         {:urlParam "vhdl" :name "VHDL"}
-                                        {:urlParam "vim-script" :name "Vim script"}
                                         {:urlParam "visual-basic" :name "Visual Basic"}
                                         {:urlParam "volt" :name "Volt"}
                                         {:urlParam "vue" :name "Vue"}

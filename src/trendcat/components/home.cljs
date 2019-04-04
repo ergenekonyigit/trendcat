@@ -1,7 +1,8 @@
 (ns trendcat.components.home
   (:require [trendcat.db :refer [app-state set-item! get-item]]
-            [trendcat.components.list-view :refer [list-view]]
-            [trendcat.actions :refer [get-repositories]]))
+            [trendcat.components.github-list :refer [github-list]]
+            [trendcat.components.hnews-list :refer [hnews-list]]
+            [trendcat.actions :refer [get-github-trends get-hnews-stories]]))
 
 
 (defn language-select []
@@ -12,16 +13,28 @@
        :on-change #(do
                      (swap! app-state assoc :lang (-> % .-target .-value))
                      (set-item! "current-lang" (:lang @app-state))
-                     (get-repositories {:since (:since @app-state)
-                                        :lang (:lang @app-state)}))}
-      (for [language (:languages @app-state)]
-        ^{:key (:name language)}
-        [:option
-         {:value (:urlParam language)}
-         (:name language)])]]))
+                     (get-github-trends {:since (:since @app-state)
+                                         :lang (:lang @app-state)}))}
+      [:option
+       {:value ""}
+       "All Languages"]
+      [:optgroup
+       {:label "Popular"}
+       (for [fav-language (:fav-languages @app-state)]
+         ^{:key (:name fav-language)}
+         [:option
+          {:value (:urlParam fav-language)}
+          (:name fav-language)])]
+      [:optgroup
+       {:label "Everything else"}
+       (for [language (:languages @app-state)]
+         ^{:key (:name language)}
+         [:option
+          {:value (:urlParam language)}
+          (:name language)])]]]))
 
 
-(defn since-select [since-name]
+(defn github-since-select [since-name]
   (let [dropdown-items {"daily" "Today"
                         "weekly" "This Week"
                         "monthly" "This Month"}]
@@ -44,8 +57,36 @@
           {:on-click #(do
                         (swap! app-state assoc :since (first item))
                         (set-item! "current-since" (:since @app-state))
-                        (get-repositories {:since (:since @app-state)
-                                           :lang (:lang @app-state)}))}
+                        (get-github-trends {:since (:since @app-state)
+                                            :lang (:lang @app-state)}))}
+          (second item)])]]]))
+
+
+(defn hnews-select [story-name]
+  (let [dropdown-items {"topstories" "Top"
+                        "newstories" "New"
+                        "showstories" "Show"}]
+    [:div.dropdown.is-hoverable
+     {:style {:margin "0 5px"}}
+     [:div.dropdown-trigger
+      [:button.button
+       {:aria-haspopup "true"
+        :aria-controls "dropdown-menu"
+        :style {:width "110px"}}
+       [:span
+        story-name]]]
+     [:div#dropdown-menu
+      {:class "dropdown-menu"
+       :role "menu"}
+      [:div.dropdown-content
+       (for [item dropdown-items]
+         ^{:key (str (random-uuid))}
+         [:a.dropdown-item
+          {:on-click #(do
+                        (swap! app-state assoc :stories (first item))
+                        (set-item! "stories" (:stories @app-state))
+                        (swap! app-state assoc :hnews-story-items [])
+                        (get-hnews-stories (:stories @app-state)))}
           (second item)])]]]))
 
 
@@ -88,18 +129,35 @@
     [github-button]]])
 
 
-(defn second-header [since-name]
-  [:div.columns.is-desktop
+(defn github-header [since-name]
+  [:div
+   {:style {:display "flex"
+            :flex-direction "row"
+            :justify-content "space-between"}}
    [:div
     {:style {:margin-bottom "10px"}}
-    [:span.title "Trending repositories on GitHub"]
-    [:span
-     {:style {:margin-left "10px"}}
-     since-name]]
+    [:span.title "GitHub"]]
    [:div
-    {:style {:margin-left "auto"}}
+    {:style {:display "flex"
+             :flex-direction "row"
+             :justify-content "flex-end"
+             :margin-bottom "10px"}}
     [language-select]
-    [since-select since-name]]])
+    [github-since-select since-name]]])
+
+
+(defn hnews-header [story-name]
+  [:div
+   {:style {:display "flex"
+            :flex-direction "row"
+            :justify-content "space-between"}}
+   [:div
+    {:style {:margin-bottom "10px"}}
+    [:span.title "Hacker News"]]
+   [:div
+    {:style {:margin-left "auto"
+             :margin-bottom "10px"}}
+    [hnews-select story-name]]])
 
 
 (defn home []
@@ -107,16 +165,21 @@
     (let [since-name (case (:since @app-state)
                        "daily" "Today"
                        "weekly" "This Week"
-                       "monthly" "This Month")]
+                       "monthly" "This Month")
+          story-name (case (:stories @app-state)
+                       "topstories" "Top"
+                       "newstories" "New"
+                       "showstories" "Show")]
       [:div
        {:style {:background-color "#fafafa"}}
        [:div.container
         [:section.hero
          [:div.hero-body
-          [:div.container
-           {:style {:width "100%"}}
-           [:div
-            [first-header]
-            [:div
-             [second-header since-name]]]]]]
-        [list-view]]])))
+          [first-header]]]
+        [:div.columns
+         [:div.column.is-half
+          [github-header since-name]
+          [github-list]]
+         [:div.column.is-half
+          [hnews-header story-name]
+          [hnews-list]]]]])))

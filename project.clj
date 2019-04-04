@@ -8,7 +8,8 @@
                  [org.clojure/clojurescript "1.10.520"]
                  [secretary "1.2.3"]
                  [reagent "0.8.1"]
-                 [cljs-ajax "0.7.5"]]
+                 [cljs-ajax "0.7.5"]
+                 [com.andrewmcveigh/cljs-time "0.5.2"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-figwheel "0.5.18"]]

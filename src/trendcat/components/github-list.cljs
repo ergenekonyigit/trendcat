@@ -1,7 +1,7 @@
-(ns trendcat.components.list-view
+(ns trendcat.components.github-list
   (:require [reagent.core :as r]
             [trendcat.db :refer [app-state get-item]]
-            [trendcat.actions :refer [get-repositories]]))
+            [trendcat.actions :refer [get-github-trends]]))
 
 
 (defn repo-language [repo]
@@ -139,7 +139,8 @@
      " / "
      [:span
       (:name repo)]]]
-   [repo-built-by repo]])
+   (when-not (empty? (:builtBy repo))
+     [repo-built-by repo])])
 
 
 (defn list-item-body [repo]
@@ -152,8 +153,7 @@
 
 (defn list-item-footer [repo]
   [:div
-   {:style {:margin-bottom "15px"
-            :display "inline-flex"
+   {:style {:display "inline-flex"
             :flex-direction "row"
             :align-items "center"}}
    (when (:language repo)
@@ -165,17 +165,17 @@
 
 (defn list-item [repo]
   [:div
-   {:style {:margin-bottom "20px"
+   {:style {:padding "10px 0"
             :border-bottom "1px solid #e8e8e8"}}
    [list-item-header repo]
    [list-item-body repo]
    [list-item-footer repo]])
 
 
-(defn list-view []
+(defn github-list []
   (r/create-class
-   {:component-did-mount #(get-repositories {:lang (:lang @app-state)
-                                             :since (:since @app-state)})
+   {:component-did-mount #(get-github-trends {:lang (:lang @app-state)
+                                              :since (:since @app-state)})
     :reagent-render
     (fn []
       [:div
@@ -183,8 +183,8 @@
                 :margin "0 0 60px 0"
                 :border-radius "8px"
                 :background-color "#fff"
-                :box-shadow "-5px 10px 60px -13px rgba(0,0,0,.2)"}}
-       (if-let [trends (:trends @app-state)]
+                :box-shadow "0px 10px 60px -13px rgba(0,0,0,.2)"}}
+       (if-let [trends (:github-trends @app-state)]
          (if (empty? trends)
            [:div
             {:style {:color "#000"
