@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Trendcat",
     "author": "Ergenekon Yigit",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Trending repositories on GitHub",
     "incognito": "split",
     "icons": {
