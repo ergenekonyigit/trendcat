@@ -26,11 +26,11 @@
     [:a
      {:href (str "https://news.ycombinator.com/item?id=" (:id item))
       :target "_blank"
-      :style {:color "#6c757d"
+      :style {:color "#878a8c"
               :margin "0 15px"}}
      [:span (str (:descendants item) " comments")]]
     [:span
-     {:style {:color "#6c757d"
+     {:style {:color "#878a8c"
               :margin "0 15px"}}
      "No comments yet"]))
 
@@ -38,7 +38,7 @@
 (defn list-item [item]
   [:div
    {:style {:padding "10px 0"
-            :border-bottom "1px solid #e8e8e8"}}
+            :border-bottom "1px solid #edeff1"}}
    [:div
     {:style {:display "flex"
              :flex-direction "row"}}
@@ -49,11 +49,12 @@
       [:a
        {:href (:url item)
         :target "_blank"
-        :style {:color "#4a4a4a"}}
+        :style {:color "#363636"}}
        [:span (:title item)]]]
      [:div
       {:style {:font-size "13px"
-               :color "#6c757d"
+               :font-weight "500"
+               :color "#878a8c"
                :display "inline-flex"
                :flex-direction "row"
                :align-items "center"}}
@@ -72,21 +73,22 @@
     :reagent-render
     (fn []
       [:div
-       {:style {:padding "35px"
+       {:style {:padding "20px"
                 :margin "0 0 60px 0"
                 :border-radius "8px"
                 :background-color "#fff"
-                :box-shadow "0px 10px 60px -13px rgba(0,0,0,.2)"}}
+                :overflow "hidden"
+                :border-width "1px"
+                :border-style "solid"
+                :border-color "#ccc"}}
        (if-let [story-items (:hnews-story-items @app-state)]
          (if (empty? story-items)
            [:div
-            {:style {:color "#000"
-                     :text-align "center"}}
+            {:style {:text-align "center"}}
             "No Data"]
            (for [item (reverse (sort-by :rank story-items))]
              ^{:key (:id item)}
              [list-item item]))
          [:div
-          {:style {:color "#000"
-                   :text-align "center"}}
+          {:style {:text-align "center"}}
           "Loading..."])])}))

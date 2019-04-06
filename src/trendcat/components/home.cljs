@@ -9,7 +9,9 @@
   (let [lang-check #(when-not (= "All Languages" %) %)]
     [:div.select
      [:select
-      {:default-value (:lang @app-state)
+      {:style {:width "200px"
+               :border-color "#ccc"}
+       :default-value (:lang @app-state)
        :on-change #(do
                      (swap! app-state assoc :lang (-> % .-target .-value))
                      (set-item! "current-lang" (:lang @app-state))
@@ -44,7 +46,8 @@
       [:button.button
        {:aria-haspopup "true"
         :aria-controls "dropdown-menu"
-        :style {:width "110px"}}
+        :style {:width "110px"
+                :border-color "#ccc"}}
        [:span
         since-name]]]
      [:div#dropdown-menu
@@ -72,7 +75,8 @@
       [:button.button
        {:aria-haspopup "true"
         :aria-controls "dropdown-menu"
-        :style {:width "110px"}}
+        :style {:width "110px"
+                :border-color "#ccc"}}
        [:span
         story-name]]]
      [:div#dropdown-menu
@@ -91,7 +95,7 @@
 
 
 (defn github-button []
-  [:a.button
+  [:a
    {:href "https://github.com/ergenekonyigit/trendcat"
     :target "_blank"}
    [:span
@@ -111,8 +115,7 @@
 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405
 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84
 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015
-2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"}]]
-    "Star"]])
+2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"}]]]])
 
 
 (defn first-header []
@@ -133,7 +136,8 @@
   [:div
    {:style {:display "flex"
             :flex-direction "row"
-            :justify-content "space-between"}}
+            :justify-content "space-between"
+            :flex-wrap "wrap"}}
    [:div
     {:style {:margin-bottom "10px"}}
     [:span.title "GitHub"]]
@@ -150,7 +154,8 @@
   [:div
    {:style {:display "flex"
             :flex-direction "row"
-            :justify-content "space-between"}}
+            :justify-content "space-between"
+            :flex-wrap "wrap"}}
    [:div
     {:style {:margin-bottom "10px"}}
     [:span.title "Hacker News"]]
@@ -171,12 +176,14 @@
                        "newstories" "New"
                        "showstories" "Show")]
       [:div
-       {:style {:background-color "#fafafa"}}
+       {:style {:background-color "#edeff1"}}
        [:div.container
         [:section.hero
          [:div.hero-body
           [first-header]]]
-        [:div.columns
+        [:div.columns.is-desktop
+         {:style {:margin-left 0
+                  :margin-right 0}}
          [:div.column.is-half
           [github-header since-name]
           [github-list]]

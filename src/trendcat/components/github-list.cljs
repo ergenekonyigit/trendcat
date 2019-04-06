@@ -10,8 +10,7 @@
             :flex-direction "row"
             :align-items "center"
             :font-size "13px"
-            :margin-right "30px"
-            :color "#212529"}}
+            :margin-right "30px"}}
    [:span
     {:style {:background-color (:languageColor repo)
              :border-radius "50%"
@@ -33,11 +32,11 @@
             :align-items "center"
             :font-size "13px"
             :font-weight "500"
-            :color "#6c757d"}}
+            :color "#878a8c"}}
    [:svg
     {:view-box "0 0 14 16" :version "1.1" :width "14" :height "16" :role "img"}
     [:path
-     {:fill "#6c757d" :fill-rule "evenodd" :d "M14 6l-4.9-.64L7 1 4.9 5.36 0
+     {:fill "#878a8c" :fill-rule "evenodd" :d "M14 6l-4.9-.64L7 1 4.9 5.36 0
 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"}]]
    \u00A0 (:stars repo)])
 
@@ -52,11 +51,11 @@
             :margin "0 15px"
             :font-size "13px"
             :font-weight "500"
-            :color "#6c757d"}}
+            :color "#878a8c"}}
    [:svg
     {:view-box "0 0 10 16" :version "1.1" :width "10" :height "16" :role "img"}
     [:path
-     {:fill "#6c757d" :fill-rule "evenodd" :d "M8 1a1.993 1.993 0 0 0-1 3.72V6L5
+     {:fill "#878a8c" :fill-rule "evenodd" :d "M8 1a1.993 1.993 0 0 0-1 3.72V6L5
  8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0
  0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8
  3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66
@@ -72,7 +71,7 @@
             :align-items "center"
             :font-size "13px"
             :font-weight "500"
-            :color "#6c757d"}}
+            :color "#878a8c"}}
    [:svg
     {:view-box "0 0 1024 1024", :version "1.1", :width "18", :height "18"}
     [:path
@@ -132,7 +131,7 @@
     [:a
      {:href (:url repo)
       :target "_blank"
-      :style {:color "#0366d6"}}
+      :style {:color "#363636"}}
      [:span
       {:style {:font-weight "400"}}
       (:author repo)]
@@ -146,7 +145,7 @@
 (defn list-item-body [repo]
   [:div
    {:style {:margin-bottom "15px"
-            :color "#000"}}
+            :color "#4a4a4a"}}
    [:p
     (:description repo)]])
 
@@ -166,7 +165,7 @@
 (defn list-item [repo]
   [:div
    {:style {:padding "10px 0"
-            :border-bottom "1px solid #e8e8e8"}}
+            :border-bottom "1px solid #edeff1"}}
    [list-item-header repo]
    [list-item-body repo]
    [list-item-footer repo]])
@@ -179,21 +178,22 @@
     :reagent-render
     (fn []
       [:div
-       {:style {:padding "35px"
+       {:style {:padding "20px"
                 :margin "0 0 60px 0"
                 :border-radius "8px"
                 :background-color "#fff"
-                :box-shadow "0px 10px 60px -13px rgba(0,0,0,.2)"}}
+                :overflow "hidden"
+                :border-width "1px"
+                :border-style "solid"
+                :border-color "#ccc"}}
        (if-let [trends (:github-trends @app-state)]
          (if (empty? trends)
            [:div
-            {:style {:color "#000"
-                     :text-align "center"}}
+            {:style {:text-align "center"}}
             "No Data"]
            (for [repo trends]
              ^{:key (:url repo)}
              [list-item repo]))
          [:div
-          {:style {:color "#000"
-                   :text-align "center"}}
+          {:style {:text-align "center"}}
           "Loading..."])])}))
