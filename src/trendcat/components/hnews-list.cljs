@@ -5,11 +5,6 @@
             [trendcat.actions :refer [get-hnews-stories]]))
 
 
-(defn create-rank
-  [number-of-votes hour]
-  (/ (- number-of-votes 1) (Math/pow (+ hour 2) 1.8)))
-
-
 (defn score [item]
   [:div
    {:style {:min-width "70px"
@@ -26,11 +21,11 @@
     [:a
      {:href (str "https://news.ycombinator.com/item?id=" (:id item))
       :target "_blank"
-      :style {:color "#878a8c"
+      :style {:color (if (:dark-mode @app-state) "#818384" "#878a8c")
               :margin "0 15px"}}
      [:span (str (:descendants item) " comments")]]
     [:span
-     {:style {:color "#878a8c"
+     {:style {:color (if (:dark-mode @app-state) "#818384" "#878a8c")
               :margin "0 15px"}}
      "No comments yet"]))
 
@@ -38,23 +33,24 @@
 (defn list-item [item]
   [:div
    {:style {:padding "10px 0"
-            :border-bottom "1px solid #edeff1"}}
+            :border-bottom (if (:dark-mode @app-state) "1px solid #4a4a4a" "1px solid #edeff1")}}
    [:div
     {:style {:display "flex"
              :flex-direction "row"}}
     [score item]
     [:div
      [:div
-      {:style {:font-weight "700"}}
+      {:style {:font-size "16px"
+               :font-weight "700"}}
       [:a
        {:href (:url item)
         :target "_blank"
-        :style {:color "#363636"}}
+        :style {:color (if (:dark-mode @app-state) "#d7dadc" "#363636")}}
        [:span (:title item)]]]
      [:div
       {:style {:font-size "13px"
                :font-weight "500"
-               :color "#878a8c"
+               :color (if (:dark-mode @app-state) "#818384" "#878a8c")
                :display "inline-flex"
                :flex-direction "row"
                :align-items "center"}}
@@ -76,19 +72,25 @@
        {:style {:padding "20px"
                 :margin "0 0 60px 0"
                 :border-radius "8px"
-                :background-color "#fff"
+                :background-color (if (:dark-mode @app-state) "#1a1a1a" "#ffffff")
                 :overflow "hidden"
                 :border-width "1px"
                 :border-style "solid"
-                :border-color "#ccc"}}
+                :border-color (if (:dark-mode @app-state) "#363636" "#cccccc")}}
        (if-let [story-items (:hnews-story-items @app-state)]
          (if (empty? story-items)
-           [:div
-            {:style {:text-align "center"}}
-            "No Data"]
+           [:div.button.is-loading
+            {:style {:display "flex"
+                     :justify-content "center"
+                     :border (if (:dark-mode @app-state) "#1a1a1a" "#ffffff")
+                     :background-color (if (:dark-mode @app-state) "#1a1a1a" "#ffffff")}}
+            "Loading"]
            (for [item (reverse (sort-by :rank story-items))]
              ^{:key (:id item)}
              [list-item item]))
-         [:div
-          {:style {:text-align "center"}}
-          "Loading..."])])}))
+         [:div.button.is-loading
+          {:style {:display "flex"
+                   :justify-content "center"
+                   :border (if (:dark-mode @app-state) "#1a1a1a" "#ffffff")
+                   :background-color (if (:dark-mode @app-state) "#1a1a1a" "#ffffff")}}
+          "Loading"])])}))

@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "Trendcat",
     "author": "Ergenekon Yigit",
-    "version": "2.0.0",
-    "description": "Trending repositories on GitHub",
+    "version": "2.1.0",
+    "description": "A new tab extension for GitHub and HackerNews feeds",
     "incognito": "split",
     "icons": {
 	"96": "img/icon-96.png",

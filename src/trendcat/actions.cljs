@@ -5,6 +5,10 @@
             [trendcat.db :refer [app-state github-api-url hnews-api-url]]))
 
 
+(defn dark-mode [mode light dark]
+  (if mode dark light))
+
+
 (defn generate-date [created-date]
   (try
     (let [current-date (js/Date.)
@@ -39,10 +43,6 @@
                                               :response-format :json
                                               :keywords? true})))
 
-(defn create-rank
-  [number-of-votes hour]
-  (/ (- number-of-votes 1) (Math/pow (+ hour 2) 1.8)))
-
 
 (defn hnews-story-items-handler [response]
   (let [time (generate-date (:time response))
@@ -52,8 +52,12 @@
         rank (/ (- (:score response) 1) (Math/pow (+ hour 2) 1.8))
         item (assoc response :time time)
         item (assoc item :rank rank)
-        items (conj (:hnews-story-items @app-state) item)]
-    (swap! app-state assoc :hnews-story-items items)))
+        items (conj (:temp-items @app-state) item)]
+    (swap! app-state assoc :temp-items items)
+    (when (= (count (:temp-items @app-state)) 50)
+      (do
+        (swap! app-state assoc :temp-items [])
+        (swap! app-state assoc :hnews-story-items items)))))
 
 
 (defn get-hnews-story-items [story-id]

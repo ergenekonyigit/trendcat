@@ -22,3 +22,18 @@ Once you connect to the nREPL, run `(cljs)` to switch to the ClojureScript REPL.
 lein clean
 lein package
 ```
+
+### Changelog
+
+#### **v2.1.0**
+
+- Redesigned Light Theme
+- New Dark Theme
+
+#### **v2.0.0**
+
+- New Hacker News Column
+
+#### **v1.0.0**
+
+- Github Trending Feed
