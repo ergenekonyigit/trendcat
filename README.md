@@ -1,5 +1,14 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/d934dd81-519b-42eb-a7d1-a97f9941bdbe/deploy-status)](https://app.netlify.com/sites/trendcat/deploys)
 
+## Trendcat
+### A new tab extension for Github and HackerNews with Reagent
+
+#### Dark Mode
+![](dark-mode.jpg)
+
+#### Light Mode
+![](light-mode.jpg)
+
 ### Development mode
 
 To start the Figwheel compiler, navigate to the project folder and run the following command in the terminal:
