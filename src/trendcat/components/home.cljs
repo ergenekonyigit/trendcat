@@ -325,10 +325,10 @@ L16.4016617,8.49127796 Z"}]])
 (defn home []
   (r/create-class
    {:component-did-mount #(do
-                            (get-github-trends {:force? false
+                            (get-github-trends {:force? (if-not (get-item "request-delay") true false)
                                                 :lang (:lang @app-state)
                                                 :since (:since @app-state)})
-                            (get-hnews-stories {:force? false
+                            (get-hnews-stories {:force? (if-not (get-item "request-delay") true false)
                                                 :type (:stories @app-state)}))
 
     :reagent-render

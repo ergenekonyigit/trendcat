@@ -1,5 +1,6 @@
 (ns trendcat.actions
   (:require [ajax.core :refer [GET]]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [cljs-time.core :as cljs-time]
             [trendcat.db :refer [app-state set-item! get-item github-api-url hnews-api-url]]))
@@ -40,13 +41,13 @@
    (get-github-trends nil))
   ([{:keys [force? lang since] :as args}]
    (let [get-request #(GET (str github-api-url "/repositories")
-                          {:params (when args {:language lang :since since})
-                           :handler github-handler
-                           :error-handler error-handler
-                           :response-format :json
-                           :keywords? true})]
+                           {:params (when args {:language lang :since since})
+                            :handler github-handler
+                            :error-handler error-handler
+                            :response-format :json
+                            :keywords? true})]
      (if-not force?
-       (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (js/parseInt (get-item "request-delay"))))
+       (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (or (edn/read-string (get-item "request-delay")) 0)))
          (get-request))
        (get-request)))))
 
@@ -85,11 +86,11 @@
 
 (defn get-hnews-stories [{:keys [force? type] :as args}]
   (let [get-request #(GET (str hnews-api-url "/" type ".json")
-                         {:handler hnews-story-ids-handler
-                          :error-handler error-handler
-                          :response-format :json
-                          :keywords? true})]
+                          {:handler hnews-story-ids-handler
+                           :error-handler error-handler
+                           :response-format :json
+                           :keywords? true})]
     (if-not force?
-      (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (js/parseInt (get-item "request-delay"))))
+      (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (or (edn/read-string (get-item "request-delay")) 0)))
         (get-request))
       (get-request))))
