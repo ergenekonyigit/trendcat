@@ -2,11 +2,11 @@
   (:require [ajax.core :refer [GET]]
             [clojure.string :as str]
             [cljs-time.core :as cljs-time]
-            [trendcat.db :refer [app-state github-api-url hnews-api-url]]))
+            [trendcat.db :refer [app-state set-item! get-item github-api-url hnews-api-url]]))
 
 
-(defn dark-mode [mode light dark]
-  (if mode dark light))
+(defn get-current-date-as-unix []
+  (Math/round (/ (.getTime (js/Date.)) 1000)))
 
 
 (defn generate-date [created-date]
@@ -26,6 +26,8 @@
 
 
 (defn github-handler [response]
+  (set-item! "current-req-time" (get-current-date-as-unix))
+  (set-item! "trendcat-github" response)
   (swap! app-state assoc :github-trends response))
 
 
@@ -36,12 +38,17 @@
 (defn get-github-trends
   ([]
    (get-github-trends nil))
-  ([{:keys [lang since] :as args}]
-   (GET (str github-api-url "/repositories") {:params (when args {:language lang :since since})
-                                              :handler github-handler
-                                              :error-handler error-handler
-                                              :response-format :json
-                                              :keywords? true})))
+  ([{:keys [force? lang since] :as args}]
+   (let [get-request #(GET (str github-api-url "/repositories")
+                          {:params (when args {:language lang :since since})
+                           :handler github-handler
+                           :error-handler error-handler
+                           :response-format :json
+                           :keywords? true})]
+     (if-not force?
+       (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (js/parseInt (get-item "request-delay"))))
+         (get-request))
+       (get-request)))))
 
 
 (defn hnews-story-items-handler [response]
@@ -53,18 +60,21 @@
         item (assoc response :time time)
         item (assoc item :rank rank)
         items (conj (:temp-items @app-state) item)]
+    (set-item! "current-req-time" (get-current-date-as-unix))
     (swap! app-state assoc :temp-items items)
     (when (= (count (:temp-items @app-state)) 50)
       (do
         (swap! app-state assoc :temp-items [])
+        (set-item! "trendcat-hnews" items)
         (swap! app-state assoc :hnews-story-items items)))))
 
 
 (defn get-hnews-story-items [story-id]
-  (GET (str hnews-api-url "/item/" story-id ".json") {:handler hnews-story-items-handler
-                                                      :error-handler error-handler
-                                                      :response-format :json
-                                                      :keywords? true}))
+  (GET (str hnews-api-url "/item/" story-id ".json")
+       {:handler hnews-story-items-handler
+        :error-handler error-handler
+        :response-format :json
+        :keywords? true}))
 
 
 (defn hnews-story-ids-handler [response]
@@ -73,8 +83,13 @@
     (get-hnews-story-items id)))
 
 
-(defn get-hnews-stories [type]
-  (GET (str hnews-api-url "/" type ".json") {:handler hnews-story-ids-handler
-                                             :error-handler error-handler
-                                             :response-format :json
-                                             :keywords? true}))
+(defn get-hnews-stories [{:keys [force? type] :as args}]
+  (let [get-request #(GET (str hnews-api-url "/" type ".json")
+                         {:handler hnews-story-ids-handler
+                          :error-handler error-handler
+                          :response-format :json
+                          :keywords? true})]
+    (if-not force?
+      (when (> (get-current-date-as-unix) (+ (get-item "current-req-time") (js/parseInt (get-item "request-delay"))))
+        (get-request))
+      (get-request))))

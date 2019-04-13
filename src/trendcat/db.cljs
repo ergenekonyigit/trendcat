@@ -20,10 +20,20 @@
 (defonce hnews-api-url "https://hacker-news.firebaseio.com/v0")
 
 
-(defonce app-state (r/atom {:dark-mode (or (get-item "dark-mode") false)
+(defonce app-state (r/atom {:github-trends (or (get-item "trendcat-github") [])
+                            :hnews-story-items (or (get-item "trendcat-hnews") [])
+                            :request-delay (or (get-item "request-delay") 1)
+                            :splash-screen (or (get-item "splash-screen") false)
+                            :dark-mode (or (get-item "dark-mode") false)
                             :stories (or (get-item "stories") "topstories")
                             :lang (or (get-item "current-lang") nil)
                             :since (or (get-item "current-since") "daily")
+                            :delay-options [{:value 1 :label "Every Time"}
+                                           {:value 60 :label "1 Minute"}
+                                           {:value 300 :label "5 Minutes"}
+                                           {:value 600 :label "10 Minutes"}
+                                           {:value 900 :label "15 Minutes"}
+                                           {:value 1800 :label "30 Minutes"}]
                             :fav-languages [{:urlParam "actionscript" :name "ActionScript"}
                                             {:urlParam "c" :name "C"}
                                             {:urlParam "c%23" :name "C#"}

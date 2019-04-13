@@ -34,6 +34,12 @@ lein package
 
 ### Changelog
 
+#### **v2.2.0**
+
+- New Settings Modal
+- Digital Clock Splash Screen (Optional)
+- Request Delay (Optional)
+
 #### **v2.1.0**
 
 - Redesigned Light Theme
