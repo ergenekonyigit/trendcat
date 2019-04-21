@@ -23,6 +23,9 @@
     [:option
      {:value ""}
      "All Languages"]
+    [:option
+     {:value "rand"}
+     "Random"]
     [:optgroup
      {:label "Popular"}
      (for [fav-language (:fav-languages @app-state)]

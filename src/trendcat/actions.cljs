@@ -41,7 +41,7 @@
    (get-github-trends nil))
   ([{:keys [force? lang since] :as args}]
    (let [get-request #(GET (str github-api-url "/repositories")
-                           {:params (when args {:language lang :since since})
+                           {:params (when args {:language (if (= "rand" lang) (:urlParam (rand-nth (:fav-languages @app-state))) lang) :since since})
                             :handler github-handler
                             :error-handler error-handler
                             :response-format :json
