@@ -132,7 +132,8 @@
    {:style {:margin-bottom "15px"}}
    [:div
     {:style {:font-size "16px"
-             :font-weight "700"}}
+             :font-weight "700"
+             :word-break "break-word"}}
     [:a
      {:href (:url repo)
       :target "_blank"
