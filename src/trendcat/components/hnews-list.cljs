@@ -41,7 +41,8 @@
     [:div
      [:div
       {:style {:font-size "16px"
-               :font-weight "700"}}
+               :font-weight "700"
+               :word-break "break-word"}}
       [:a
        {:href (:url item)
         :target "_blank"
