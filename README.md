@@ -1,7 +1,13 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/d934dd81-519b-42eb-a7d1-a97f9941bdbe/deploy-status)](https://app.netlify.com/sites/trendcat/deploys)
 
+
 ## Trendcat
 ### A new tab extension for Github and HackerNews with Reagent
+
+## Install
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/trendcat/efpdjmbhdeindmfegilaloknlpfloefd)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/trendcat/)
+
 
 #### Dark Mode
 ![](dark-mode.jpg)
