@@ -14,7 +14,7 @@
   (js->clj (.parse js/JSON (.getItem (.-localStorage js/window) key)) :keywordize-keys true))
 
 
-(defonce github-api-url "https://github-trending-api.now.sh")
+(defonce github-api-url "https://hackertab.pupubird.com")
 
 
 (defonce hnews-api-url "https://hacker-news.firebaseio.com/v0")
@@ -52,6 +52,7 @@
                                             {:urlParam "python" :name "Python"}
                                             {:urlParam "r" :name "R"}
                                             {:urlParam "ruby" :name "Ruby"}
+                                            {:urlParam "rust" :name "Rust"}
                                             {:urlParam "scala" :name "Scala"}
                                             {:urlParam "shell" :name "Shell"}
                                             {:urlParam "swift" :name "Swift"}
@@ -410,7 +411,6 @@
                                         {:urlParam "rpc" :name "RPC"}
                                         {:urlParam "rpm-spec" :name "RPM Spec"}
                                         {:urlParam "runoff" :name "RUNOFF"}
-                                        {:urlParam "rust" :name "Rust"}
                                         {:urlParam "sage" :name "Sage"}
                                         {:urlParam "saltstack" :name "SaltStack"}
                                         {:urlParam "sas" :name "SAS"}
