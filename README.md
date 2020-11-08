@@ -40,6 +40,15 @@ lein package
 
 ### Changelog
 
+#### **v2.4.0**
+
+- Github api url changes
+- Move rust to favorite languages
+
+#### **v2.3.0**
+
+- Word break fix
+
 #### **v2.2.0**
 
 - New Settings Modal
