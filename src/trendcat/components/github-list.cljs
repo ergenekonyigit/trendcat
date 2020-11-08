@@ -1,5 +1,6 @@
 (ns trendcat.components.github-list
   (:require [reagent.core :as r]
+            [clojure.string :as str]
             [trendcat.db :refer [app-state get-item]]
             [trendcat.actions :refer [get-github-trends]]))
 
@@ -12,7 +13,7 @@
             :font-size "13px"
             :margin-right "30px"}}
    [:span
-    {:style {:background-color (:languageColor repo)
+    {:style {:background-color (str "#" (:languageColor repo))
              :border-radius "50%"
              :display "inline-block"
              :height "12px"
