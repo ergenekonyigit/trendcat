@@ -13,7 +13,7 @@
             :font-size "13px"
             :margin-right "30px"}}
    [:span
-    {:style {:background-color (str "#" (:languageColor repo))
+    {:style {:background-color (:languageColor repo)
              :border-radius "50%"
              :display "inline-block"
              :height "12px"
