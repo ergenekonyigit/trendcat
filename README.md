@@ -40,6 +40,11 @@ lein package
 
 ### Changelog
 
+#### **v2.4.1**
+
+- Github api changes
+- Fix github language color issue
+
 #### **v2.4.0**
 
 - Github api url changes
