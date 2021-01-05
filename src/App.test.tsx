@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import App from './App'
+import React from 'react'
+import { screen } from '@testing-library/react'
+import { render } from './test-utils'
+import { App } from './App'
 
-test('renders Read the docs link', () => {
+test('renders learn react link', () => {
   render(<App />)
-  const linkElement = screen.getByText(/Read the docs/i)
+  const linkElement = screen.getByText(/learn chakra/i)
   expect(linkElement).toBeInTheDocument()
 })
