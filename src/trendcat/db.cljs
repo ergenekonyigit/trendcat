@@ -14,7 +14,7 @@
   (js->clj (.parse js/JSON (.getItem (.-localStorage js/window) key)) :keywordize-keys true))
 
 
-(defonce github-api-url "https://hackertab.pupubird.com")
+(defonce github-api-url "https://github-trending-api.waningflow.com")
 
 
 (defonce hnews-api-url "https://hacker-news.firebaseio.com/v0")
